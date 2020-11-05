@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import com.android.volley.toolbox.Volley;
 import com.caraguna.recipe_apps.adapters.ListCategoryAdapter;
 import com.caraguna.recipe_apps.models.ListRecipeModel;
 import com.caraguna.recipe_apps.settings.Configuration;
+import com.caraguna.recipe_apps.settings.PgDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +35,8 @@ public class ListCategory extends AppCompatActivity {
     private String key;
     private ListCategoryAdapter adapter;
 
+    private ProgressDialog progressDialog;
+
     // Interface
     private ImageView imgBack;
 
@@ -43,6 +47,8 @@ public class ListCategory extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rvListCategory);
         imgBack = findViewById(R.id.imgBack);
+
+        progressDialog = new ProgressDialog(this);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +62,7 @@ public class ListCategory extends AppCompatActivity {
     }
 
     private void getList(){
+        PgDialog.show(progressDialog);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Configuration.baseURLDetailCategory+key, new Response.Listener<String>() {
             @Override
@@ -82,13 +89,16 @@ public class ListCategory extends AppCompatActivity {
                     adapter = new ListCategoryAdapter(listData, ListCategory.this);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    PgDialog.hide(progressDialog);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    PgDialog.hide(progressDialog);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                PgDialog.hide(progressDialog);
                 error.printStackTrace();
             }
         });

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -25,6 +26,9 @@ import com.bumptech.glide.Glide;
 import com.caraguna.recipe_apps.adapters.StepAdapter;
 import com.caraguna.recipe_apps.settings.Configuration;
 import com.caraguna.recipe_apps.settings.PgDialog;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailRecipe extends AppCompatActivity implements View.OnClickListener {
-    private String key;
+    private String key, title, img;
 
     private RecyclerView rvStep;
     private LinearLayoutManager lmStep;
@@ -45,6 +49,10 @@ public class DetailRecipe extends AppCompatActivity implements View.OnClickListe
     // interface
     private TextView txtTitle, txtDesc, txtIngr, txtStep, txtTime, txtDificulty, txtPortion, txtAuthor, txtDate, txtSelengkapnya;
     private ImageView imgView, btnBack;
+    private LinearLayout linearBerbagi;
+
+    // admob
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +72,18 @@ public class DetailRecipe extends AppCompatActivity implements View.OnClickListe
         txtAuthor = findViewById(R.id.txtAuthor);
         txtDate = findViewById(R.id.txtDate);
         rvStep = findViewById(R.id.rvStep);
+        linearBerbagi = findViewById(R.id.linearBerbagi);
+        adView = findViewById(R.id.adView);
+
+        MobileAds.initialize(this);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         progressDialog = new ProgressDialog(this);
 
         key = getIntent().getStringExtra("key");
-        String img = getIntent().getStringExtra("img");
-        String title = getIntent().getStringExtra("title");
+        img = getIntent().getStringExtra("img");
+        title = getIntent().getStringExtra("title");
 
         txtTitle.setText(title);
         Glide.with(this).load(img).into(imgView);
@@ -78,6 +92,7 @@ public class DetailRecipe extends AppCompatActivity implements View.OnClickListe
 
         btnBack.setOnClickListener(this);
         txtSelengkapnya.setOnClickListener(this);
+        linearBerbagi.setOnClickListener(this);
     }
 
     private void getDetail(){
@@ -129,6 +144,21 @@ public class DetailRecipe extends AppCompatActivity implements View.OnClickListe
         requestQueue.add(stringRequest);
     }
 
+    private void shareApps(){
+        try {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            String shareMessage = "\n"+title+"\nDownload aplikasi masak sekarang juga!\n\n";
+            shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Masakan Indonesia");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+            startActivity(Intent.createChooser(shareIntent, "Pilih salah satu"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -139,6 +169,9 @@ public class DetailRecipe extends AppCompatActivity implements View.OnClickListe
                 txtDesc.setEllipsize(null);
                 txtDesc.setMaxLines(Integer.MAX_VALUE);
                 txtSelengkapnya.setVisibility(View.GONE);
+                break;
+            case R.id.linearBerbagi:
+                shareApps();
                 break;
         }
     }

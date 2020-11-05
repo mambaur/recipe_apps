@@ -68,7 +68,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         rvCategory = findViewById(R.id.rvCategory);
         progressBar = findViewById(R.id.progressBar);
 
-        eSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        eSearch.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
@@ -77,7 +77,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                                 event.getAction() == KeyEvent.ACTION_DOWN &&
                                 event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                     if (event == null || !event.isShiftPressed()) {
-                        Toast.makeText(SearchActivity.this, eSearch.getText(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SearchActivity.this, v.getText().toString(), Toast.LENGTH_SHORT).show();
 
                         return true; // consume.
                     }

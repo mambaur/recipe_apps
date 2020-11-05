@@ -1,7 +1,7 @@
 package com.caraguna.recipe_apps.fragment;
 
 import android.app.ProgressDialog;
-import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,7 +17,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.caraguna.recipe_apps.R;
@@ -58,8 +57,9 @@ public class ListRecipe extends Fragment {
 
         recyclerView = view.findViewById(R.id.rvRecipes);
         progressDialog = new ProgressDialog(view.getContext());
+        listData = new ArrayList<>();
 
-        getListData(view.getContext());
+        getListData();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -72,9 +72,8 @@ public class ListRecipe extends Fragment {
                     if (loading) {
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = false;
-                            Toast.makeText(getContext(), "You loaded", Toast.LENGTH_SHORT).show();
-                            // Do pagination.. i.e. fetch new data
-
+                            pages++;
+                            getListData();
                             loading = true;
                         }
                     }
@@ -84,13 +83,12 @@ public class ListRecipe extends Fragment {
         return view;
     }
 
-    private void getListData(final Context context){
+    private void getListData(){
         PgDialog.show(progressDialog);
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Configuration.baseURLRecipes + pages, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                listData = new ArrayList<>();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray jsonArray = jsonObject.getJSONArray("results");
@@ -106,10 +104,10 @@ public class ListRecipe extends Fragment {
                         listData.add(listRecipeModel);
                     }
 
-                    linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                    linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                     recyclerView.setLayoutManager(linearLayoutManager);
 
-                    recipeListAdapter = new RecipeListAdapter(context, listData);
+                    recipeListAdapter = new RecipeListAdapter(getContext(), listData);
                     recyclerView.setAdapter(recipeListAdapter);
                     recipeListAdapter.notifyDataSetChanged();
                     PgDialog.hide(progressDialog);
@@ -120,7 +118,7 @@ public class ListRecipe extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(stringRequest);
