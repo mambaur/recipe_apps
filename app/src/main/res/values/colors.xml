@@ -1,7 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorPrimary">#0275d8</color>
+    <color name="colorSuccess">#5cb85c</color>
+    <color name="colorLightBlue">#5bc0de</color>
+    <color name="colorWarning">#f0ad4e</color>
     <color name="colorDark">#353535</color>
+    <color name="colorLight">#f7f7f7</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorDanger">#d92b2c</color>
+
+    <!--    Main Color-->
+    <color name="colorGreen5">#2eb62c</color>
+    <color name="colorGreen4">#57c84d</color>
+    <color name="colorGreen3">#83d475</color>
+    <color name="colorGreen2">#abe098</color>
+    <color name="colorGreen1">#c5e8b7</color>
+    <color name="colorLightGrey">#D6D6D6</color>
+    <color name="colorLightGrey2">#ECEBEB</color>
+    <color name="colorLightGrey3">#F1F1F1</color>
+    <color name="colorGrey">#8A8A8A</color>
+    <color name="colorPrimaryGrey">#656565</color>
+    <color name="colorWhiteTransparent">#77FFFFFF</color>
+
+    <!--    tcolor-->
+    <color name="colorGreen">#169D1F</color>
+    <color name="colorPrimaryGreen">#03AC0E</color>
+    <color name="colorGreenSoft">#3C9B74</color>
+    <color name="colorLightGreen">#03CA69</color>
+    <color name="colorLightGreen2">#309D46</color>
+    <color name="colorBgGreen">#F4FDFB</color>
+    <color name="colorBgGreen2">#DFFAF2</color>
+    <color name="colorBgGreen3">#FCFEFE</color>
+    <color name="colorWhiteGreen">#DFFFEC</color>
+    <color name="colorOrange">#F35723</color>
+    <color name="colorLightOrange">#FF8842</color>
+
+
+    <!-- green gradient -->
+    <color name="lushGreen1">#56ab2f</color>
+    <color name="lushGreen2"> #a8e063</color>
+    <color name="lemonGreen1"> #3CA55C</color>
+    <color name="lemonGreen2"> #B5AC49</color>
+    <color name="mojitoGreen1">#1D976C</color>
+    <color name="mojitoGreen2">#93F9B9</color>
 </resources>
