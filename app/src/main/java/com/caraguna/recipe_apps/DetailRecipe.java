@@ -24,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.caraguna.recipe_apps.adapters.StepAdapter;
+import com.caraguna.recipe_apps.settings.Common;
 import com.caraguna.recipe_apps.settings.Configuration;
 import com.caraguna.recipe_apps.settings.PgDialog;
 import com.google.android.gms.ads.AdRequest;
@@ -138,7 +139,7 @@ public class DetailRecipe extends AppCompatActivity implements View.OnClickListe
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DetailRecipe.this, error.toString(), Toast.LENGTH_SHORT).show();
+                Common.volleyErrorHandle(DetailRecipe.this, error);
             }
         });
         requestQueue.add(stringRequest);

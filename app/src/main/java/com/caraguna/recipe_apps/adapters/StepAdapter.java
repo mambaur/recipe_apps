@@ -35,7 +35,10 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.HolderData> {
 
     @Override
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
-        holder.txtStep.setText(lsitData.get(position));
+        String[] data = lsitData.get(position).split(" ", 2);
+        holder.txtStep.setText(data[1]);
+        holder.txtNumber.setText(data[0]);
+
         if (position%2 == 0){
             holder.linearStep.setBackground(ContextCompat.getDrawable(context, R.color.colorLightGrey3));
         }
@@ -47,12 +50,13 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.HolderData> {
     }
 
     public class HolderData extends RecyclerView.ViewHolder{
-        TextView txtStep;
+        TextView txtStep, txtNumber;
         LinearLayout linearStep;
         public HolderData(@NonNull View itemView) {
             super(itemView);
             txtStep = itemView.findViewById(R.id.txtStep);
             linearStep = itemView.findViewById(R.id.linearStep);
+            txtNumber = itemView.findViewById(R.id.txtNumber);
         }
     }
 }

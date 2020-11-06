@@ -12,6 +12,6 @@
         android:text="Ikan Bakar"
         android:layout_marginRight="5dp"
         android:background="@drawable/bg_rounded_white_outline"
-        android:paddingVertical="5dp"
-        android:paddingHorizontal="10dp"/>
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="15dp"/>
 </LinearLayout>

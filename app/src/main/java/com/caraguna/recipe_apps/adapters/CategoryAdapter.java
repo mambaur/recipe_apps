@@ -40,11 +40,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
         holder.txtCategory.setText(listData.get(position).getCategory());
         final String key = listData.get(position).getKey();
+        final String categoryName = listData.get(position).getCategory();
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ListCategory.class);
                 intent.putExtra("key", key);
+                intent.putExtra("categoryName", categoryName);
                 context.startActivity(intent);
             }
         });

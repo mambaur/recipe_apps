@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,6 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.caraguna.recipe_apps.adapters.ListCategoryAdapter;
 import com.caraguna.recipe_apps.models.ListRecipeModel;
+import com.caraguna.recipe_apps.settings.Common;
 import com.caraguna.recipe_apps.settings.Configuration;
 import com.caraguna.recipe_apps.settings.PgDialog;
 
@@ -39,6 +41,7 @@ public class ListCategory extends AppCompatActivity {
 
     // Interface
     private ImageView imgBack;
+    private TextView titleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,9 @@ public class ListCategory extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rvListCategory);
         imgBack = findViewById(R.id.imgBack);
+        titleBar = findViewById(R.id.titleBar);
+
+        titleBar.setText(getIntent().getStringExtra("categoryName"));
 
         progressDialog = new ProgressDialog(this);
 
@@ -100,6 +106,7 @@ public class ListCategory extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 PgDialog.hide(progressDialog);
                 error.printStackTrace();
+                Common.volleyErrorHandle(ListCategory.this, error);
             }
         });
         requestQueue.add(stringRequest);

@@ -4,14 +4,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="15dp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:padding="10dp"
+        android:layout_gravity="start"
+        android:gravity="center"
+        android:background="@drawable/bg_circle_white_outline_grey">
+        <TextView
+            android:id="@+id/txtNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="13dp"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/colorDark"/>
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/txtStep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
         android:textColor="@color/colorDark"
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="15dp"
+        android:layout_marginLeft="10dp"
         android:text="Recipe"/>
 </LinearLayout>

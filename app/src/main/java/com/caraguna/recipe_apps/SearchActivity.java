@@ -7,26 +7,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.caraguna.recipe_apps.adapters.CategoryAdapter;
 import com.caraguna.recipe_apps.adapters.SearchAdapter;
 import com.caraguna.recipe_apps.models.CategoryModel;
 import com.caraguna.recipe_apps.models.ListRecipeModel;
+import com.caraguna.recipe_apps.settings.Common;
 import com.caraguna.recipe_apps.settings.Configuration;
 
 import org.json.JSONArray;
@@ -68,40 +64,21 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         rvCategory = findViewById(R.id.rvCategory);
         progressBar = findViewById(R.id.progressBar);
 
-        eSearch.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+        eSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                        actionId == EditorInfo.IME_ACTION_DONE ||
-                        event != null &&
-                                event.getAction() == KeyEvent.ACTION_DOWN &&
-                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    if (event == null || !event.isShiftPressed()) {
-                        Toast.makeText(SearchActivity.this, v.getText().toString(), Toast.LENGTH_SHORT).show();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                        return true; // consume.
-                    }
-                }
-                return false;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                getData(String.valueOf(s));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
-
-//        eSearch.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                getData(String.valueOf(s));
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
 
         getCategory();
         btnClose.setOnClickListener(this);
@@ -143,9 +120,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                         recyclerView.setAdapter(searchAdapter);
                         searchAdapter.notifyDataSetChanged();
                         progressBar.setVisibility(View.GONE);
-                    }else{
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(SearchActivity.this, "Data tidak ditemukan", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     progressBar.setVisibility(View.GONE);
@@ -156,7 +130,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(SearchActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
             }
         });
         requestQueue.add(stringRequest);
@@ -193,6 +167,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                Common.volleyErrorHandle(SearchActivity.this, error);
             }
         });
         requestQueue.add(stringRequest);
